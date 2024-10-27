@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+
 const firebaseConfig = {
   apiKey: "AIzaSyBr39-e6vGZPZhS_26W6oO0kuwmlcnm6Pg",
   authDomain: "devdeakin-3a8ea.firebaseapp.com",
@@ -12,12 +13,11 @@ const firebaseConfig = {
   measurementId: "G-4PKH87ESXX"
 };
 
-
-// Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
+// Initialize Firebase (Commented out since it's not directly used)
+// const firebaseApp = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
-
 provider.setCustomParameters({
   prompt: "select_account"
 });
@@ -30,7 +30,6 @@ export const createUserDocFromAuth = async (userAuth, additionalInformation = {}
   if (!userAuth) return;
 
   const userDocRef = doc(db, 'users', userAuth.uid);
-
   const userSnapshot = await getDoc(userDocRef);
 
   if (!userSnapshot.exists()) {
@@ -44,9 +43,8 @@ export const createUserDocFromAuth = async (userAuth, additionalInformation = {}
         createdAt,
         ...additionalInformation
       })
-    }
-    catch (error) {
-      console.log('error in creating ', error.message)
+    } catch (error) {
+      console.log('error in creating user document', error.message);
     }
   }
 
@@ -55,10 +53,10 @@ export const createUserDocFromAuth = async (userAuth, additionalInformation = {}
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
-  return await createUserWithEmailAndPassword(auth, email, password)
+  return await createUserWithEmailAndPassword(auth, email, password);
 }
 
 export const signinAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
-  return await signInWithEmailAndPassword(auth, email, password)
+  return await signInWithEmailAndPassword(auth, email, password);
 }
